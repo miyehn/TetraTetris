@@ -11,13 +11,13 @@
  */
 
 struct TetMode : Mode {
+  TetMode();
+  virtual ~TetMode();
+
   // convenience typedefs
   typedef uint32_t uint; 
   typedef std::vector<int> vec1D;
   typedef std::vector<vec1D> vec2D;
-
-  TetMode();
-  virtual ~TetMode();
 
   // functions called by main loop:
   virtual bool handle_event(SDL_Event const &, glm::uvec2 const &window_size) override;
@@ -25,9 +25,13 @@ struct TetMode : Mode {
   virtual void draw(glm::uvec2 const &drawable_size) override;
 
   //----- tet-specific functions -----
+  void additional_init();
   void step_increment();
   void show_board();
+  void show_vector(vec1D& vec);
 
+  void gen_rand_tile();
+  bool adjacent_to_tile(int x, int y);
   bool on_ground();
   bool clear_filled_rows();
 

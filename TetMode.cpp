@@ -6,8 +6,6 @@
 //for glm::value_ptr() :
 #include <glm/gtc/type_ptr.hpp>
 
-#include <random>
-
 TetMode::TetMode() {
 
   //----- allocate OpenGL resources -----
@@ -96,22 +94,9 @@ TetMode::TetMode() {
 
     GL_ERRORS(); //PARANOIA: print out any OpenGL errors that may have happened
   }
+  
+  additional_init();
 
-  { // test initialization
-    gameboard[0][0] = 1;
-    gameboard[0][1] = 1;
-  }
-
-}
-
-// helper
-void TetMode::show_board() {
-    for (int i=0; i<gameboard.size(); i++) {
-      for (int j=0; j<gameboard.size(); j++) {
-        std::cout << gameboard[j][i] << " ";
-      }
-      std::cout << std::endl;
-    }
 }
 
 TetMode::~TetMode() {
@@ -131,13 +116,7 @@ bool TetMode::handle_event(SDL_Event const &evt, glm::uvec2 const &window_size) 
   return false;
 }
 
-void TetMode::step_increment() {
-  // show_board();
-  std::cout << "!\n";
-}
-
 void TetMode::update(float elapsed) {
-  // static std::mt19937 mt; //mersenne twister pseudo-random number generator
   time_elapsed += elapsed;
   if (time_elapsed > timestep) {
     step_increment();
@@ -148,8 +127,9 @@ void TetMode::update(float elapsed) {
 void TetMode::draw(glm::uvec2 const &drawable_size) {
   //some nice colors from the course web page:
   #define HEX_TO_U8VEC4( HX ) (glm::u8vec4( (HX >> 24) & 0xff, (HX >> 16) & 0xff, (HX >> 8) & 0xff, (HX) & 0xff ))
-  const glm::u8vec4 bg_color = HEX_TO_U8VEC4(0xf3ffc6ff);
-  const glm::u8vec4 fg_color = HEX_TO_U8VEC4(0x000000ff);
+  const glm::u8vec4 bg_color = HEX_TO_U8VEC4(0x161616ff);
+  const glm::u8vec4 fg_color = HEX_TO_U8VEC4(0x363636ff);
+  const glm::u8vec4 hl_color = HEX_TO_U8VEC4(0xe8a343ff);
   #undef HEX_TO_U8VEC4
 
   //---- compute vertices to draw ----
@@ -191,12 +171,20 @@ void TetMode::draw(glm::uvec2 const &drawable_size) {
     for (uint j=0; j<board_size; j++) {
       if (gameboard[j][i]>0) {
         draw_rectangle(
-            glm::vec2( -court_radius.x + i + 0.5, -court_radius.y + j + 0.5 ),
+            glm::vec2( -court_radius.x + i + 0.5f, -court_radius.y + j + 0.5f ),
             tile_radius,
             fg_color);
       }
     }
   } 
+
+  // active tile
+  for (uint i=0; i<8; i+=2) {
+    draw_rectangle(
+        glm::vec2( -court_radius.x + active_tile[i] + 0.5f, -court_radius.y + active_tile[i+1] + 0.5f ),
+        tile_radius,
+        hl_color);
+  }
 
   //------ compute court-to-window transform ------
 
