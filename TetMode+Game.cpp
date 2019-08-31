@@ -3,8 +3,7 @@
 
 void TetMode::additional_init() {
 
-  gameboard[0][0] = 1;
-  gameboard[0][1] = 1;
+  gameboard[10][4] = 1;
 
   srand(time(NULL));
 
@@ -13,8 +12,7 @@ void TetMode::additional_init() {
 }
 
 void TetMode::step_increment() {
-  // show_board();
-  std::cout << "!\n";
+  if (!on_ground()) move_down();
 }
 
 bool TetMode::adjacent_to_tile(int x, int y) {
@@ -36,7 +34,6 @@ void TetMode::gen_rand_tile() {
   active_tile[1] = rand() % 4;
 
   for (uint i=2; i<8; i+=2) {
-
     while(true) {
       uint x = rand() % 4;
       uint y = rand() % 4;
@@ -46,7 +43,6 @@ void TetMode::gen_rand_tile() {
         break;
       }
     }
-
   }
 
   // then move it into center of gameboard
@@ -56,7 +52,24 @@ void TetMode::gen_rand_tile() {
 
 }
 
+void TetMode::move_down() {
+  for(uint j=1; j<8; j+=2) {
+    active_tile[j] -= 1;
+  }
+}
+
+bool TetMode::on_ground() {
+  for(uint i=0; i<8; i+=2) {
+    int x = active_tile[i];
+    int y = active_tile[i+1];
+    if (y == 0) return true;
+    if (gameboard[x][y-1]>0) return true;
+  }
+  return false;
+}
+
 // ---- miscellaneous helpers ----
+
   bool adjacent_to_tile(int x, int y);
 
 void TetMode::show_board() {

@@ -169,7 +169,7 @@ void TetMode::draw(glm::uvec2 const &drawable_size) {
   // gameboard
   for (uint i=0; i<board_size; i++) {
     for (uint j=0; j<board_size; j++) {
-      if (gameboard[j][i]>0) {
+      if (gameboard[i][j]>0) {
         draw_rectangle(
             glm::vec2( -court_radius.x + i + 0.5f, -court_radius.y + j + 0.5f ),
             tile_radius,

@@ -27,13 +27,15 @@ struct TetMode : Mode {
   //----- tet-specific functions -----
   void additional_init();
   void step_increment();
+
+  void gen_rand_tile(); bool adjacent_to_tile(int x, int y); // helper to gen_rand_tile
+  void move_down();
+  bool on_ground(); // TODO: implement this
+  bool clear_filled_rows();
+
+  // miscellaneous helpers
   void show_board();
   void show_vector(vec1D& vec);
-
-  void gen_rand_tile();
-  bool adjacent_to_tile(int x, int y);
-  bool on_ground();
-  bool clear_filled_rows();
 
   //----- game state -----
   
