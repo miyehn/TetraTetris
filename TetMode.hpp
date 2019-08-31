@@ -11,31 +11,45 @@
  */
 
 struct TetMode : Mode {
+  // convenience typedefs
+  typedef uint32_t uint; 
+  typedef std::vector<int> vec1D;
+  typedef std::vector<vec1D> vec2D;
+
   TetMode();
   virtual ~TetMode();
 
-  //functions called by main loop:
+  // functions called by main loop:
   virtual bool handle_event(SDL_Event const &, glm::uvec2 const &window_size) override;
   virtual void update(float elapsed) override;
   virtual void draw(glm::uvec2 const &drawable_size) override;
 
+  //----- tet-specific functions -----
+  void step_increment();
+  void show_board();
+
+  bool on_ground();
+  bool clear_filled_rows();
+
   //----- game state -----
+  
+  uint board_size = 24;
+  glm::vec2 court_radius = glm::vec2((float)board_size/2.0f, (float)board_size/2.0f);
+  glm::vec2 tile_radius = glm::vec2(0.45f, 0.45f);
 
-  glm::vec2 court_radius = glm::vec2(7.0f, 5.0f);
-  glm::vec2 paddle_radius = glm::vec2(0.2f, 1.0f);
-  glm::vec2 ball_radius = glm::vec2(0.2f, 0.2f);
+  uint32_t score = 24;
 
-  glm::vec2 left_paddle = glm::vec2(-court_radius.x + 0.5f, 0.0f);
-  glm::vec2 right_paddle = glm::vec2( court_radius.x - 0.5f, 0.0f);
+  const float timestep = 0.5f;
+  float time_elapsed = 0.0f;
 
-  glm::vec2 ball = glm::vec2(0.0f, 0.0f);
-  glm::vec2 ball_velocity = glm::vec2(-1.0f, 0.0f);
+  vec2D gameboard = vec2D( board_size, vec1D(board_size, 0) );
+  vec1D active_tile = vec1D(8, 0); // { (x,y), (x,y), (x,y), (x,y) }
+  bool has_tile_active = false;
+  bool rotatable = false;
 
-  uint32_t left_score = 0;
-  uint32_t right_score = 0;
-
-  float ai_offset = 0.0f;
-  float ai_offset_update = 0.0f;
+  //----- view-related constants -----
+  const float wall_radius = 0.05f;
+  const float padding = 0.14f; //padding between outside of walls and edge of window
 
   //----- opengl assets / helpers ------
 
