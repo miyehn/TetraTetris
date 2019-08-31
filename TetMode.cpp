@@ -119,6 +119,7 @@ bool TetMode::handle_event(SDL_Event const &evt, glm::uvec2 const &window_size) 
 void TetMode::update(float elapsed) {
   time_elapsed += elapsed;
   if (time_elapsed > timestep) {
+    step_count++;
     step_increment();
     time_elapsed = 0.0f;
   }

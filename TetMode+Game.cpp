@@ -5,6 +5,14 @@ void TetMode::additional_init() {
 
   gameboard[10][4] = 1;
 
+  for (int i=0; i<board_size; i++) {
+    gameboard[i][0] = 1;
+    gameboard[i][1] = 1;
+    gameboard[i][2] = 1;
+  }
+  gameboard[4][2] = 0;
+  gameboard[8][0] = 0;
+
   srand(time(NULL));
 
   gen_rand_tile();
@@ -13,6 +21,7 @@ void TetMode::additional_init() {
 
 void TetMode::step_increment() {
   if (!on_ground()) move_down();
+  if (step_count == 2) clear_filled_rows();
 }
 
 bool TetMode::adjacent_to_tile(int x, int y) {
@@ -66,6 +75,46 @@ bool TetMode::on_ground() {
     if (gameboard[x][y-1]>0) return true;
   }
   return false;
+}
+
+bool TetMode::clear_filled_rows() {
+
+  auto get_first_filled_row = [&]() {
+    for (int y=0; y<board_size; y++) {
+      uint x_cnt = 0;
+      for (uint x=0; x<board_size; x++) {
+        if (gameboard[x][y]>0) x_cnt++;
+      }
+      if (x_cnt == board_size) return y;
+    }
+    return -1;
+  };
+
+  bool has_filled_rows = false;
+  int first_filled_row_y;
+  while ( (first_filled_row_y=get_first_filled_row()) >= 0 ) {
+    has_filled_rows = true;
+
+    // remove this first_filled_row
+    for (int x=0; x<board_size; x++) {
+
+      // for each column, first remove the tile on filled row
+      gameboard[x][first_filled_row_y] = 0;
+
+      int y = first_filled_row_y + 1;
+      assert(y>0);
+      while (true) { // for all the ones stacking on top, move down by 1
+        // end condition: 
+        if (y >= board_size || gameboard[x][y] == 0) break;
+        gameboard[x][y-1] = gameboard[x][y]; // move y down to y-1
+        gameboard[x][y] = 0; // clear where y was
+        y++; // now go look at the one above it.
+      }
+      
+    }
+    
+  }
+  return has_filled_rows;
 }
 
 // ---- miscellaneous helpers ----

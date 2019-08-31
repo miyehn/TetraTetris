@@ -30,7 +30,7 @@ struct TetMode : Mode {
 
   void gen_rand_tile(); bool adjacent_to_tile(int x, int y); // helper to gen_rand_tile
   void move_down();
-  bool on_ground(); // TODO: implement this
+  bool on_ground(); 
   bool clear_filled_rows();
 
   // miscellaneous helpers
@@ -43,13 +43,15 @@ struct TetMode : Mode {
   glm::vec2 court_radius = glm::vec2((float)board_size/2.0f, (float)board_size/2.0f);
   glm::vec2 tile_radius = glm::vec2(0.45f, 0.45f);
 
-  uint32_t score = 24;
+  uint score = 24;
+  uint step_count = 0;
 
   const float timestep = 0.5f;
   float time_elapsed = 0.0f;
 
   vec2D gameboard = vec2D( board_size, vec1D(board_size, 0) );
-  vec1D active_tile = vec1D(8, 0); // { (x,y), (x,y), (x,y), (x,y) }
+  // init to all -2 for gen_rand_tile() correctness
+  vec1D active_tile = vec1D(8, -2); // { (x,y), (x,y), (x,y), (x,y) },
   bool has_tile_active = false;
   bool rotatable = false;
 
