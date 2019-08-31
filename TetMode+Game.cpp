@@ -10,8 +10,9 @@ void TetMode::additional_init() {
     gameboard[i][1] = 1;
     gameboard[i][2] = 1;
   }
-  gameboard[4][2] = 0;
-  gameboard[8][0] = 0;
+  gameboard[4][3] = 1;
+  gameboard[8][1] = 0;
+  gameboard[0][3] = 1;
 
   srand(time(NULL));
 
@@ -22,6 +23,7 @@ void TetMode::additional_init() {
 void TetMode::step_increment() {
   if (!on_ground()) move_down();
   if (step_count == 2) clear_filled_rows();
+  else if (step_count == 5) rotate_board(-1);
 }
 
 bool TetMode::adjacent_to_tile(int x, int y) {
@@ -75,6 +77,30 @@ bool TetMode::on_ground() {
     if (gameboard[x][y-1]>0) return true;
   }
   return false;
+}
+
+void TetMode::rotate_board(int dir) {
+  // create an alternate, rotated board first
+  vec2D newboard = vec2D( board_size, vec1D(board_size, 0) );
+  if (dir > 0) { // ccw 90 degrees
+    for (int x=0; x<board_size; x++) {
+      for (int y=0; y<board_size; y++) {
+        int newx = board_size - 1 - y;
+        int newy = x;
+        newboard[newx][newy] = gameboard[x][y];
+      }
+    }
+  } else if (dir < 0) {
+    for (int x=0; x<board_size; x++) {
+      for (int y=0; y<board_size; y++) {
+        int newx = y;
+        int newy = board_size - 1 - x;
+        newboard[newx][newy] = gameboard[x][y];
+      }
+    }
+  }
+
+  gameboard = newboard;
 }
 
 bool TetMode::clear_filled_rows() {

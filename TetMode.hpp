@@ -32,6 +32,7 @@ struct TetMode : Mode {
   void move_down();
   bool on_ground(); 
   bool clear_filled_rows();
+  void rotate_board(int dir); // only rotate if feasible. dir=1: ccw, dir=-1: cw
 
   // miscellaneous helpers
   void show_board();
