@@ -5,6 +5,8 @@ void TetMode::additional_init() {
 
   gameboard[10][4] = 1;
 
+  gameboard[2] = vec1D(board_size, 1);
+
   for (int i=0; i<board_size; i++) {
     gameboard[i][0] = 1;
     gameboard[i][1] = 1;
@@ -22,8 +24,7 @@ void TetMode::additional_init() {
 
 void TetMode::step_increment() {
   if (!on_ground()) move_down();
-  if (step_count == 2) clear_filled_rows();
-  else if (step_count == 5) rotate_board(-1);
+  if (step_count == 5) clear_filled_rows();
 }
 
 bool TetMode::adjacent_to_tile(int x, int y) {
@@ -124,14 +125,18 @@ bool TetMode::clear_filled_rows() {
     // remove this first_filled_row
     for (int x=0; x<board_size; x++) {
 
-      // for each column, first remove the tile on filled row
+      // find ceiling height
+      int ceiling_height = board_size;
+      while (gameboard[x][ceiling_height-1]>0) ceiling_height--;
+
+      // for each column, remove the tile on filled row
       gameboard[x][first_filled_row_y] = 0;
 
       int y = first_filled_row_y + 1;
       assert(y>0);
       while (true) { // for all the ones stacking on top, move down by 1
         // end condition: 
-        if (y >= board_size || gameboard[x][y] == 0) break;
+        if (y >= ceiling_height) break;
         gameboard[x][y-1] = gameboard[x][y]; // move y down to y-1
         gameboard[x][y] = 0; // clear where y was
         y++; // now go look at the one above it.
