@@ -6,9 +6,9 @@ Design: Tetris but with a rotatable board, which is essentially 4 tetris games g
 
 Screenshots:
 
-![screenshot 1](screenshots/screenshot-1567367949134.png)
+<img src="screenshots/screenshot-1567367949134.png" height="400">
 
-![screenshot 1](screenshots/screenshot-1567368032956.png)
+<img src="screenshots/screenshot-1567368032956.png" height="400">
 
 How To Play:
 
