@@ -96,7 +96,7 @@ TetMode::TetMode() {
   }
   
   srand(time(NULL));
-  additional_init();
+  init_game();
 
 }
 
@@ -156,12 +156,11 @@ void TetMode::draw(glm::uvec2 const &drawable_size) {
   draw_rectangle(glm::vec2( 0.0f, court_radius.y+wall_radius), glm::vec2(court_radius.x, wall_radius), fg_color);
 
   // scores:
-  glm::vec2 score_radius = tile_radius;
   for (uint32_t i = 0; i < score; ++i) {
     draw_rectangle(
-        glm::vec2( -court_radius.x + i + 0.5f, court_radius.y + 0.65f), 
+        glm::vec2( -court_radius.x + i + 0.5f, court_radius.y + 0.35f), 
         score_radius, 
-        fg_color);
+        hl_color);
   }
 
   // gameboard

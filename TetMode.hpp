@@ -7,7 +7,7 @@
 #include <deque>
 
 /*
- * PongMode is a game mode that implements a single-player game of Pong.
+ * TetMode is a game mode that implements a modified version of tetris.
  */
 
 struct TetMode : Mode {
@@ -24,8 +24,8 @@ struct TetMode : Mode {
   virtual void update(float elapsed) override;
   virtual void draw(glm::uvec2 const &drawable_size) override;
 
-  //----- tet-specific functions -----
-  void additional_init();
+  //----- tet-specific functions and game state -----
+  void init_game();
   void step_increment();
 
   void gen_rand_tile(); bool adjacent_to_tile(int x, int y); // helper to gen_rand_tile
@@ -35,30 +35,31 @@ struct TetMode : Mode {
   void rotate_board(int dir); // only rotate if feasible. dir=1: ccw, dir=-1: cw
   void inactivate_tile();
 
+  void endgame();
+
+  uint board_size;
+  uint score;
+  uint step_count;
+  float timestep;
+  vec2D gameboard;
+  vec1D active_tile; // vec1D of 8 ints, { (x,y), (x,y), (x,y), (x,y) },
+
+  // flags
+  bool gameover;
+  bool has_tile_active;
+  bool rotatable;
+  bool need_clear_check;
+
   // miscellaneous helpers
   void show_board();
   void show_vector(vec1D& vec);
 
-  //----- game state -----
+  //----- other generic game state -----
   
-  uint board_size = 24;
-  glm::vec2 court_radius = glm::vec2((float)board_size/2.0f, (float)board_size/2.0f);
-  glm::vec2 tile_radius = glm::vec2(0.45f, 0.45f);
-
-  uint score = 5;
-  uint step_count = 0;
-
-  const float timestep = 0.5f;
+  glm::vec2 court_radius;
+  glm::vec2 tile_radius;
+  glm::vec2 score_radius;
   float time_elapsed = 0.0f;
-
-  vec2D gameboard = vec2D( board_size, vec1D(board_size, 0) );
-  // init to all -2 for gen_rand_tile() correctness
-  vec1D active_tile = vec1D(8, -2); // { (x,y), (x,y), (x,y), (x,y) },
-
-  // flags
-  bool has_tile_active = false;
-  bool rotatable = false;
-  bool need_clear_check = false;
 
   //----- view-related constants -----
   const float wall_radius = 0.05f;
