@@ -3,29 +3,21 @@
 
 void TetMode::additional_init() {
 
-  gameboard[10][4] = 1;
-
-  gameboard[2] = vec1D(board_size, 1);
-
-  for (int i=0; i<board_size; i++) {
-    gameboard[i][0] = 1;
-    gameboard[i][1] = 1;
-    gameboard[i][2] = 1;
-  }
-  gameboard[4][3] = 1;
-  gameboard[8][1] = 0;
-  gameboard[0][3] = 1;
-
-  srand(time(NULL));
-
   gen_rand_tile();
 
 }
 
 void TetMode::step_increment() {
-  if (!on_ground()) move_down();
-  if (step_count == 6) inactivate_tile();
-  if (step_count == 8) clear_filled_rows();
+  if (on_ground()) {
+    inactivate_tile();
+  } else if (!has_tile_active) {
+    if (need_clear_check) {
+      if (!clear_filled_rows()) gen_rand_tile();
+    } else
+      gen_rand_tile();
+  } else {
+    move_down();
+  }
 }
 
 bool TetMode::adjacent_to_tile(int x, int y) {
@@ -74,6 +66,7 @@ void TetMode::move_down() {
 }
 
 bool TetMode::on_ground() {
+  if (!has_tile_active) return false;
   for(uint i=0; i<8; i+=2) {
     int x = active_tile[i];
     int y = active_tile[i+1];
@@ -104,6 +97,7 @@ void TetMode::inactivate_tile() {
     gameboard[x][y] = 1;
   }
   has_tile_active = false;
+  need_clear_check = true;
 }
 
 void TetMode::rotate_board(int dir) {
@@ -180,8 +174,8 @@ bool TetMode::clear_filled_rows() {
       }
       
     }
-    
   }
+  need_clear_check = false;
   return has_filled_rows;
 }
 

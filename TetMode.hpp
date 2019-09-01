@@ -54,8 +54,11 @@ struct TetMode : Mode {
   vec2D gameboard = vec2D( board_size, vec1D(board_size, 0) );
   // init to all -2 for gen_rand_tile() correctness
   vec1D active_tile = vec1D(8, -2); // { (x,y), (x,y), (x,y), (x,y) },
+
+  // flags
   bool has_tile_active = false;
   bool rotatable = false;
+  bool need_clear_check = false;
 
   //----- view-related constants -----
   const float wall_radius = 0.05f;

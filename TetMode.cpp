@@ -95,6 +95,7 @@ TetMode::TetMode() {
     GL_ERRORS(); //PARANOIA: print out any OpenGL errors that may have happened
   }
   
+  srand(time(NULL));
   additional_init();
 
 }
