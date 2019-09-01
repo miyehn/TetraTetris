@@ -176,11 +176,13 @@ void TetMode::draw(glm::uvec2 const &drawable_size) {
   } 
 
   // active tile
-  for (uint i=0; i<8; i+=2) {
-    draw_rectangle(
-        glm::vec2( -court_radius.x + active_tile[i] + 0.5f, -court_radius.y + active_tile[i+1] + 0.5f ),
-        tile_radius,
-        hl_color);
+  if (has_tile_active) {
+    for (uint i=0; i<8; i+=2) {
+      draw_rectangle(
+          glm::vec2( -court_radius.x + active_tile[i] + 0.5f, -court_radius.y + active_tile[i+1] + 0.5f ),
+          tile_radius,
+          hl_color);
+    }
   }
 
   //------ compute court-to-window transform ------

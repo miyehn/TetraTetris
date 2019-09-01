@@ -24,7 +24,8 @@ void TetMode::additional_init() {
 
 void TetMode::step_increment() {
   if (!on_ground()) move_down();
-  if (step_count == 5) clear_filled_rows();
+  if (step_count == 6) inactivate_tile();
+  if (step_count == 8) clear_filled_rows();
 }
 
 bool TetMode::adjacent_to_tile(int x, int y) {
@@ -62,6 +63,8 @@ void TetMode::gen_rand_tile() {
     active_tile[i] += (board_size / 2) - 2;
   }
 
+  has_tile_active = true;
+
 }
 
 void TetMode::move_down() {
@@ -94,6 +97,15 @@ bool TetMode::handle_event(SDL_Event const &evt, glm::uvec2 const &window_size) 
   return false;
 }
 
+void TetMode::inactivate_tile() {
+  for (int i=0; i<8; i+=2) {
+    int x = active_tile[i];
+    int y = active_tile[i+1];
+    gameboard[x][y] = 1;
+  }
+  has_tile_active = false;
+}
+
 void TetMode::rotate_board(int dir) {
   // create an alternate, rotated board first
   vec2D newboard = vec2D( board_size, vec1D(board_size, 0) );
@@ -113,9 +125,20 @@ void TetMode::rotate_board(int dir) {
         newboard[newx][newy] = gameboard[x][y];
       }
     }
+  } else { return; }
+
+  // check if rotated board is valid (does not overlap with active tile)
+  bool valid_flag = true;
+  for (int i=0; i<8; i+=2) {
+    int x = active_tile[i];
+    int y = active_tile[i+1];
+    if (newboard[x][y] > 0) {
+      valid_flag = false;
+      break;
+    }
   }
 
-  gameboard = newboard;
+  if (valid_flag) gameboard = newboard;
 }
 
 bool TetMode::clear_filled_rows() {

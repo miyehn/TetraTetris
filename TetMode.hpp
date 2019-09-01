@@ -33,6 +33,7 @@ struct TetMode : Mode {
   bool on_ground(); 
   bool clear_filled_rows();
   void rotate_board(int dir); // only rotate if feasible. dir=1: ccw, dir=-1: cw
+  void inactivate_tile();
 
   // miscellaneous helpers
   void show_board();
@@ -44,7 +45,7 @@ struct TetMode : Mode {
   glm::vec2 court_radius = glm::vec2((float)board_size/2.0f, (float)board_size/2.0f);
   glm::vec2 tile_radius = glm::vec2(0.45f, 0.45f);
 
-  uint score = 24;
+  uint score = 5;
   uint step_count = 0;
 
   const float timestep = 0.5f;
