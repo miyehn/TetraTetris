@@ -13,7 +13,7 @@ Screenshots:
 How To Play:
 
 - `left` arrow key: rotate the board counter-clockwise.
-- `right` arrow key: rotate the board clociwise.
+- `right` arrow key: rotate the board clockwise.
 - `down` arrow key: let the current tile fall to ground immediately.
 - `s`: take a screenshot.
 
