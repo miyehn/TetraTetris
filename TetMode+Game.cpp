@@ -80,6 +80,20 @@ bool TetMode::on_ground() {
   return false;
 }
 
+bool TetMode::handle_event(SDL_Event const &evt, glm::uvec2 const &window_size) {
+  if (evt.type == SDL_KEYUP) {
+    SDL_Keycode key = evt.key.keysym.sym;
+    if (key == SDLK_LEFT) {
+      rotate_board(1);
+      return true;
+    } else if (key == SDLK_RIGHT) {
+      rotate_board(-1);
+      return true;
+    }
+  }
+  return false;
+}
+
 void TetMode::rotate_board(int dir) {
   // create an alternate, rotated board first
   vec2D newboard = vec2D( board_size, vec1D(board_size, 0) );

@@ -112,10 +112,6 @@ TetMode::~TetMode() {
   white_tex = 0;
 }
 
-bool TetMode::handle_event(SDL_Event const &evt, glm::uvec2 const &window_size) {
-  return false;
-}
-
 void TetMode::update(float elapsed) {
   time_elapsed += elapsed;
   if (time_elapsed > timestep) {
