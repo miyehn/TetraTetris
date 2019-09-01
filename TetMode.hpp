@@ -39,7 +39,6 @@ struct TetMode : Mode {
 
   uint board_size;
   uint score;
-  uint step_count;
   float timestep;
   vec2D gameboard;
   vec1D active_tile; // vec1D of 8 ints, { (x,y), (x,y), (x,y), (x,y) },
@@ -60,6 +59,7 @@ struct TetMode : Mode {
   glm::vec2 tile_radius;
   glm::vec2 score_radius;
   float time_elapsed = 0.0f;
+  uint step_count = 0;
 
   //----- view-related constants -----
   const float wall_radius = 0.05f;

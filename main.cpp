@@ -2,7 +2,6 @@
 #include "Mode.hpp"
 
 //The 'GameMode' mode plays the game:
-#include "PongMode.hpp"
 #include "TetMode.hpp"
 
 //GL.hpp will include a non-namespace-polluting set of opengl prototypes:
@@ -50,7 +49,7 @@ int main(int argc, char **argv) {
   SDL_Window *window = SDL_CreateWindow(
     "TetraTetris", //TODO: remember to set a title for your game!
     SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
-    640, 480, //TODO: modify window size if you'd like
+    540, 480, //TODO: modify window size if you'd like
     SDL_WINDOW_OPENGL
     | SDL_WINDOW_RESIZABLE //uncomment to allow resizing
     | SDL_WINDOW_ALLOW_HIGHDPI //uncomment for full resolution on high-DPI screens
@@ -125,9 +124,13 @@ int main(int argc, char **argv) {
         } else if (evt.type == SDL_QUIT) {
           Mode::set_current(nullptr);
           break;
-        } else if (evt.type == SDL_KEYDOWN && evt.key.keysym.sym == SDLK_PRINTSCREEN) {
+        } else if (evt.type == SDL_KEYDOWN && evt.key.keysym.sym == SDLK_s) {
           // --- screenshot key ---
-          std::string filename = "screenshot.png";
+          using namespace std::chrono;
+          std::string filename = 
+            "screenshots/screenshot-" + 
+            std::to_string(duration_cast<milliseconds>(system_clock::now().time_since_epoch()).count()) + 
+            ".png";
           std::cout << "Saving screenshot to '" << filename << "'." << std::endl;
           glBindFramebuffer(GL_READ_FRAMEBUFFER, 0);
           glReadBuffer(GL_FRONT);

@@ -6,7 +6,6 @@ void TetMode::init_game() {
   // initialize game state
   board_size = 24;
   score = 0;
-  step_count = 0;
   timestep = 0.5;
   gameboard = vec2D( board_size, vec1D(board_size, 0) );
   // init to all -2 for gen_rand_tile() correctness
@@ -121,7 +120,7 @@ bool TetMode::handle_event(SDL_Event const &evt, glm::uvec2 const &window_size) 
     } else if (key == SDLK_RIGHT) {
       rotate_board(-1);
       return true;
-    } else if (key == SDLK_DOWN) {
+    } else if (key == SDLK_DOWN && has_tile_active) {
       while (!on_ground()) {
         move_down();
       }

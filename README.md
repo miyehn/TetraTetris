@@ -1,15 +1,20 @@
-# (TODO: your game's title)
+# TetraTetris
 
-Author: (TODO: your name)
+Author: Rain Du
 
-Design: (TODO: In two sentences or fewer, describe what is new and interesting about your game.)
+Design: Tetris but with a rotatable board, which is essentially 4 tetris games going on at the same time and the user gets to choose which one to continue with the current tile.
 
-Screen Shot:
+Screenshots:
 
-![Screen Shot](screenshot.png)
+![screenshot 1](screenshots/screenshot-1567367949134.png)
+
+![screenshot 1](screenshots/screenshot-1567368032956.png)
 
 How To Play:
 
-(TODO: describe the controls and (if needed) goals/strategy.)
+- `left` arrow key: rotate the board counter-clockwise.
+- `right` arrow key: rotate the board clociwise.
+- `down` arrow key: let the current tile fall to ground immediately.
+- `s`: take a screenshot.
 
 This game was built with [NEST](NEST.md).
